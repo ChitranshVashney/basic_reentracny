@@ -3,7 +3,6 @@ pragma solidity ^0.8.13;
 
 /**
  * @title VulnerableBank
- * @dev This contract demonstrates a reentrancy vulnerability
  */
 contract VulnerableBank {
     // Mapping of user addresses to their balances
@@ -23,14 +22,11 @@ contract VulnerableBank {
 
     /**
      * @dev Users can withdraw their ETH
-     * VULNERABILITY: This function performs the external call before updating the state,
-     * making it vulnerable to reentrancy attacks
      */
     function withdraw() external {
         uint256 amount = balances[msg.sender];
         require(amount > 0, "Insufficient balance");
 
-        // VULNERABILITY: External call before state update
         (bool success,) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
 
